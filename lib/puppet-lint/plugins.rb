@@ -61,6 +61,7 @@ class PuppetLint
   end
 end
 
+require 'puppet-lint/plugins/check_assignment'
 require 'puppet-lint/plugins/check_classes'
 require 'puppet-lint/plugins/check_comments'
 require 'puppet-lint/plugins/check_conditionals'
