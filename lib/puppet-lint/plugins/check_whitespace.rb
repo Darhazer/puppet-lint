@@ -234,3 +234,31 @@ PuppetLint.new_check(:arrow_alignment) do
     end
   end
 end
+
+# Public: Check for missing whitespace around LBRACE
+#
+# No style guide reference
+PuppetLint.new_check(:whitespace_around_braces) do
+  BRACES = Set[:LBRACE, :RBRACE]
+  ALLOWED = Set[:WHITESPACE, :NEWLINE, :INDENT, :COMMA]
+
+  def check
+    tokens.select { |r| BRACES.include? r.type }.each do |token|
+       unless ALLOWED.include?(token.prev_token.type)
+         notify :warning, {
+           :message => "space missing to the left of #{token.value}",
+           :line    => token.line,
+           :column  => token.column,
+         }
+       end
+
+       unless ALLOWED.include?(token.next_token.type)
+          notify :warning, {
+            :message => 'space missing to the right of #{token.value}',
+            :line    => token.line,
+            :column  => token.column,
+          }
+      end
+    end
+  end
+end
